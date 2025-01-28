@@ -7,6 +7,7 @@ ssh-keygen -f sshkey
 export RG=$(az group list --output table|grep sandbox|awk '{print $1}')
 
 # Run the deployment
+
 az deployment group create \
   --resource-group $RG \
   --template-file main.bicep \
