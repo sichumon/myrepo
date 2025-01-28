@@ -1,0 +1,88 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "spokeNetworkConfig": {
+      "value": {
+        "vnetName": "SpokeVNet",
+        "addressPrefix": [
+          "10.0.1.0/24"
+        ],
+        "subnets": [
+          {
+            "name": "green_dev_mgmt_subnet",
+            "addressPrefix": "10.0.1.0/28"
+          },
+          {
+            "name": "green_dev_appgw_subnet",
+            "addressPrefix": "10.0.1.16/28"
+          },
+          {
+            "name": "green_dev_aks_subnet",
+            "addressPrefix": "10.0.1.128/25"
+          },
+          {
+            "name": "green_dev_ilb_subnet",
+            "addressPrefix": "10.0.1.32/28"
+          },
+          {
+            "name": "green_dev_pe_subnet",
+            "addressPrefix": "10.0.1.64/26"
+          }
+        ]
+      }
+    },
+    "hubNetworkConfig": {
+      "value": {
+        "vnetName": "HubVNet",
+        "addressPrefix": [
+          "10.0.0.0/24"
+        ],
+        "subnets": [
+          {
+            "name": "ManagementSubnet",
+            "addressPrefix": "10.0.0.0/28"
+          },
+          {
+            "name": "DevOpsSubnet",
+            "addressPrefix": "10.0.0.32/27"
+          },
+          {
+            "name": "AzureFirewallSubnet",
+            "addressPrefix": "10.0.0.64/26"
+          },
+          {
+            "name": "AzureFirewallManagementSubnet",
+            "addressPrefix": "10.0.0.128/26"
+          },
+          {
+            "name": "AzureBastionSubnet",
+            "addressPrefix": "10.0.0.192/26"
+          }
+        ]
+      }
+    },
+    "bastionConfig": {
+      "value": {
+        "name": "HubBastion"
+      }
+    },
+    "firewallConfig": {
+      "value": {
+        "name": "HubFirewall",
+        "skuTier": "Basic"
+      }
+    },
+    "devopsConfig": {
+      "value": {
+        "vmName": "DevOpsAgent",
+        "vmSize": "Standard_D2s_v3",
+        "adminUsername": "azureuser",
+        "sshPublicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJMFVh7PG2nCWskquKFNppTCbuiZqU3COOhE0fR5N/jk sijujose@green_mac"
+      }
+    }
+  }
+}
