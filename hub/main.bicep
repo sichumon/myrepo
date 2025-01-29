@@ -33,7 +33,6 @@ module spokeNetwork 'modules/spokenetwork.bicep' = {
     location: location
     spokevnetName: spokeNetworkConfig.vnetName
     spokeaddressPrefix: spokeNetworkConfig.addressPrefix
-    spokesubnets: spokeNetworkConfig.subnets
   }
 }
 
