@@ -53,27 +53,27 @@ module bastionHost 'modules/bastion.bicep' = {
   }
 }
 
-module firewall 'modules/firewall.bicep' = {
-  name: 'firewallDeployment'
-  params: {
-    location: location
-    firewallName: firewallConfig.name
-    skuTier: firewallConfig.skuTier
-    firewallSubnetId: '${hubNetwork.outputs.vnetId}/subnets/AzureFirewallSubnet'
-    managementSubnetId: '${hubNetwork.outputs.vnetId}/subnets/AzureFirewallManagementSubnet'
-  }
-}
+// module firewall 'modules/firewall.bicep' = {
+//   name: 'firewallDeployment'
+//   params: {
+//     location: location
+//     firewallName: firewallConfig.name
+//     skuTier: firewallConfig.skuTier
+//     firewallSubnetId: '${hubNetwork.outputs.vnetId}/subnets/AzureFirewallSubnet'
+//     managementSubnetId: '${hubNetwork.outputs.vnetId}/subnets/AzureFirewallManagementSubnet'
+//   }
+// }
 
-module devopsAgent 'modules/devops-agent.bicep' = {
-  name: 'devopsAgentDeployment'
-  params: {
-    location: location
-    vmName: devopsConfig.vmName
-    vmSize: devopsConfig.vmSize
-    adminUsername: devopsConfig.adminUsername
-    sshPublicKey: devopsConfig.sshPublicKey
-    subnetId: '${hubNetwork.outputs.vnetId}/subnets/DevOpsSubnet'
-  }
-}
+// module devopsAgent 'modules/devops-agent.bicep' = {
+//   name: 'devopsAgentDeployment'
+//   params: {
+//     location: location
+//     vmName: devopsConfig.vmName
+//     vmSize: devopsConfig.vmSize
+//     adminUsername: devopsConfig.adminUsername
+//     sshPublicKey: devopsConfig.sshPublicKey
+//     subnetId: '${hubNetwork.outputs.vnetId}/subnets/DevOpsSubnet'
+//   }
+// }
 
 

@@ -47,20 +47,20 @@
       "value": {
         "name": "HubBastion"
       }
-    },
-    "firewallConfig": {
-      "value": {
-        "name": "HubFirewall",
-        "skuTier": "Basic"
-      }
-    },
-    "devopsConfig": {
-      "value": {
-        "vmName": "DevOpsAgent",
-        "vmSize": "Standard_D2s_v3",
-        "adminUsername": "azureuser",
-        "sshPublicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJMFVh7PG2nCWskquKFNppTCbuiZqU3COOhE0fR5N/jk sijujose@green_mac"
-      }
     }
+    // "firewallConfig": {
+    //   "value": {
+    //     "name": "HubFirewall",
+    //     "skuTier": "Basic"
+    //   }
+    // },
+    // "devopsConfig": {
+    //   "value": {
+    //     "vmName": "DevOpsAgent",
+    //     "vmSize": "Standard_D2s_v3",
+    //     "adminUsername": "azureuser",
+    //     "sshPublicKey": ""
+    //   }
+    // }
   }
 }

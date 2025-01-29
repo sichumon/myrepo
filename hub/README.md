@@ -12,4 +12,4 @@ az deployment group create \
   --resource-group $RG \
   --template-file main.bicep \
   --parameters @parameters.json \
-  --parameters devopsConfig.sshPublicKey="$(cat sshkey.pub)"
+  --parameters devopsConfig.sshPublicKey="$(cat sshkey.pub)"67
