@@ -48,7 +48,11 @@
         "name": "HubBastion"
       }
     }
-    // "firewallConfig": {
+    
+  }
+}
+
+// "firewallConfig": {
     //   "value": {
     //     "name": "HubFirewall",
     //     "skuTier": "Basic"
@@ -62,5 +66,3 @@
     //     "sshPublicKey": ""
     //   }
     // }
-  }
-}
