@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata": {
+      "description": "Parameters for deploying the ADX Cluster with a private endpoint and DNS zones"
+    },
+    "parameters": {
+      "adxLocation": {
+        "value": "eastus"
+      },
+      "adxClusterName": {
+        "value": "nkAdxCluster"
+      },
+      "spokeVnetName": {
+        "value": "nkpractice"
+      },
+      "spokePeSubnetName": {
+        "value": "pe-subnet"
+      },
+      "adxPrivateDnsZoneName": {
+        "value": "privatelink.kusto.windows.net"
+      },
+      "adxSkuName": {
+        "value": "Standard_L8as_v3"
+      },
+      "skuTier": {
+      "value": "Standard"
+      },
+      "adxSkuCapacity": {
+        "value": 2
+      },
+      "adxEnv": {
+        "value": "dev"
+      },
+      "adxProj": {
+        "value": "practice"
+      }
+    }
+  }
+  
