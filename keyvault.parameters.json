@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location": {
+        "value": "eastus"
+      },
+      "resourceGroupName": {
+        "value": "1-77cc8617-playground-sandbox"
+      },
+      "keyVaultName": {
+        "value": "nkPrivKeyVlt"
+      },
+      "skuName": {
+        "value": "standard"
+      },
+      "softDeleteRetentionDays": {
+        "value": 90
+      },
+      "enabledForDeployment": {
+        "value": false
+      },
+      "enabledForDiskEncryption": {
+        "value": false
+      },
+      "enabledForTemplateDeployment": {
+        "value": false
+      },
+      "enableRbacAuthorization": {
+        "value": true
+      },
+      //"enableDefender": {
+      //  "value": true
+      //},
+      //"logAnalyticsWorkspaceId": {
+      //  "value": "/subscriptions/<subscription-id>/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/myLogAnalyticsWorkspace"
+      //},
+      "vnetName": {
+        "value": "nkpractice"
+      },
+      "subnetName": {
+        "value": "pe-subnet"
+      },
+      "privateEndpointName": {
+        "value": "nkKeyVlt-pe"
+      },
+      "privateDnsZoneName": {
+        "value": "privatelink.vaultcore.azure.net"
+      }
+    }
+  }
+  
