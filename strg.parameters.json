@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "env": {
+        "value": "dev"
+      },
+      "proj": {
+        "value": "poc"
+      },
+      "storageAccountName": {
+        "value": "nkstrgeacc0132"
+      },
+      //"resourceGroupName": {
+        //"value": "1-80c9080c-playground-sandbox"
+      //},
+      "location": {
+        "value": "eastus"
+      },
+      "virtualNetworkName": {
+        "value": "nkpractice"
+      },
+      "subnetName": {
+        "value": "pe-subnet"
+      },
+      //"logAnalyticsWorkspaceId": {
+      //  "value": "myLogAnalyticsWorkspace"
+      //},
+      //"defenderPlanId": {
+      //  "value": "myDefenderPlan"
+      //},
+      "skuName": {
+        "value": "Standard_LRS"
+      },
+      "storageKind": {
+        "value": "StorageV2"
+      },
+      "deleteRetentionPolicy": {
+        "value": 7
+      }
+    }
+  }
+  
