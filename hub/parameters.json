@@ -43,26 +43,24 @@
         ]
       }
     },
+    "firewallConfig": {
+      "value": {
+        "name": "HubFirewall",
+        "skuTier": "Standard"
+      }
+    },
+    "devopsConfig": {
+      "value": {
+        "vmName": "DevOpsAgent",
+        "vmSize": "Standard_D2s_v3",
+        "adminUsername": "azureuser",
+        "sshPublicKey": ""
+      }
+    },
     "bastionConfig": {
       "value": {
         "name": "HubBastion"
       }
     }
-    
   }
 }
-
-// "firewallConfig": {
-    //   "value": {
-    //     "name": "HubFirewall",
-    //     "skuTier": "Basic"
-    //   }
-    // },
-    // "devopsConfig": {
-    //   "value": {
-    //     "vmName": "DevOpsAgent",
-    //     "vmSize": "Standard_D2s_v3",
-    //     "adminUsername": "azureuser",
-    //     "sshPublicKey": ""
-    //   }
-    // }
