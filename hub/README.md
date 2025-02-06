@@ -13,5 +13,4 @@ export RG=$(az group list --output table|grep sandbox|awk '{print $1}')
 az deployment group create \
   --resource-group $RG \
   --template-file main.bicep \
-  --parameters @parameters.json \
-  --parameters devopsConfig.sshPublicKey="$(cat sshkey.pub)"67
+  --parameters @parameters.json
