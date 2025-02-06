@@ -8,10 +8,10 @@ param location string
 param hubNetworkConfig object
 @description('Bastion configuration')
 param bastionConfig object
-@description('Firewall configuration')
-// param firewallConfig object
-// @description('DevOps agent configuration')
-// param devopsConfig object
+// @description('Firewall configuration')
+// // param firewallConfig object
+// // @description('DevOps agent configuration')
+// // param devopsConfig object
 @description('Spoke network configuration')
 param spokeNetworkConfig object
 
