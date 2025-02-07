@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "Parameters for deploying the IoT Hub with a private endpoint and DNS zones"
+  },
+  "parameters": {
+    "iotLocation": {
+      "value": "eastus"
+    },
+    "iotHubName": {
+      "value": "nkIothub2"
+    },
+    "spokeVnetName": {
+      "value": "nkpractice"
+    },
+    "spokePeSubnetName": {
+      "value": "pe-subnet"
+    },
+    "iotPrivateDnsZoneName": {
+      "value": "privatelink.azure-devices.net"
+    },
+    "iotEnv": {
+      "value": "dev"
+    },
+    "iotProj": {
+      "value": "practice"
+    },
+    "iotTlsVersion": {
+      "value": "1.2"
+    },
+    "iotSkuName": {
+      "value": "S1"
+    },
+    "iotSkuCapacity": {
+      "value": 1
+    },
+    "iotDefenderEnabled": {
+      "value": true
+    }
+  }
+}

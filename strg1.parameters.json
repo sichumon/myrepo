@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "env": {
+        "value": "dev"
+      },
+      "proj": {
+        "value": "myProject"
+      },
+      "storageAccountName": {
+        "value": "nkstrgeacc14567"
+      },
+      "resourceGroupName": {
+        "value": "1-782bba89-playground-sandbox"
+      },
+      "location": {
+        "value": "southcentralus"
+      },
+      "virtualNetworkName": {
+        "value": "nkpractice"
+      },
+      "subnetName": {
+        "value": "pe-subnet"
+      },
+      "skuName": {
+        "value": "Standard_LRS"
+      },
+      "storageKind": {
+        "value": "StorageV2"
+      },
+      "minimumTlsVersion": {
+        "value": "TLS1_2"
+      },
+      "enableEncryption": {
+        "value": true
+      },
+      "privateDnsZoneName": {
+        "value": "privatelink.blob.core.windows.net"
+      }
+    }
+  }
+  
