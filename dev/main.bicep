@@ -1,4 +1,4 @@
-targetScope = 'subscription'
+// targetScope = 'subscription'
 
 // Load parameters
 param resourceGroupName string
