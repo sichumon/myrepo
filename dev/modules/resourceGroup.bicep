@@ -1,3 +1,5 @@
+targetScope = 'subscription'
+
 param resourceGroupName string
 param location string = resourceGroup().location
 param tags object = {}
