@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 
 @description('Spoke VNet address space.')
 param spokeVnetAddressSpace array = [
-  '10.0.2.0/22'
+  '10.0.2.0/23'
 ]
 
 @description('Spoke VNet Subnets configuration.')
