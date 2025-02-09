@@ -1,37 +1,58 @@
-// targetScope = 'subscription'
+// main.bicep
+targetScope = 'resourceGroup'
 
-// Load parameters
-param resourceGroupName string
-param location string
+// Parameters
 param tags object
-param vnetName string
-param vnetAddressPrefix string
-param subnets array
+@description('Location for all resources.')
+param location string
+// @description('Hub network configuration')
+// param hubVnetName string
+// param hubVnetID string
+// param hubResourceGroupName string
+// param resourceGroupName string
+// @description('VNET configuration')
+// param vnetAddressPrefix string
+// param subnets array
+// param vnetName string
+@description('DevOps agent configuration')
+param devopsConfig object
+param devopssubnet string
 
-// Deploy Resource Group
-module rg 'modules/resourceGroup.bicep' = {
-  name: 'resourceGroupDeployment'
+// // Modules
+// module vnetConfig 'modules/networking.bicep' = {
+//   name: 'vNetDeployment'
+//   params: {
+//     location: location
+//     vnetName: vnetName
+//     vnetAddressPrefix: vnetAddressPrefix
+//     subnets: subnets
+//     tags: tags
+//   }
+// }
+
+// module vnetPeering 'modules/peering.bicep' = {
+//   name: 'vnetPeeringDeployment'
+//   params: {
+//     // hubResourceGroupName: hubResourceGroupName
+//     // resourceGroupNamex: resourceGroupName
+//     hubVnetName: hubVnetName
+//     hubvnetID: hubVnetID
+//     spokeVnetName: vnetName
+//   }
+// }
+
+module devopsAgent 'modules/devops-agent.bicep' = {
+  name: 'devopsAgentDeployment'
   params: {
-    resourceGroupName: resourceGroupName
     location: location
+    vmName: devopsConfig.vmName
+    vmSize: devopsConfig.vmSize
+    adminUsername: devopsConfig.adminUsername
+    sshPublicKey: devopsConfig.sshPublicKey
+    // subnetId: '${vnetConfig.outputs.vnetId}/subnets/${devopssubnet}'
+    subnetId: '/subscriptions/0cc20e92-7212-41e7-bf3f-2ebb8b14dcfb/resourceGroups/meme-dev-rg/providers/Microsoft.Network/virtualNetworks/meme-dev-vnet/subnets/meme-dev-mgmt-subnet'
     tags: tags
   }
 }
 
-// Deploy Networking (VNet and Subnets)
-module networking 'modules/networking.bicep' = {
-  name: 'networkingDeployment'
-  scope: resourceGroup(rg.outputs.resourceGroupName)
-  params: {
-    vnetName: vnetName
-    location: location
-    vnetAddressPrefix: vnetAddressPrefix
-    subnets: subnets
-    tags: tags
-  }
-}
 
-// Outputs
-output resourceGroupId string = rg.outputs.resourceGroupId
-output vnetId string = networking.outputs.vnetId
-output subnetIds array = networking.outputs.subnetIds
