@@ -9,23 +9,23 @@ param spokeVnetAddressSpace array = [
 @description('Spoke VNet Subnets configuration.')
 var spokeSubnets = [
   {
-    name: 'meme_dev_mgmt_subnet'
+    name: 'meme-dev-mgmt-subnet'
     addressPrefix: '10.0.2.0/28'
   }
   {
-    name: 'meme_dev_appgw_subnet'
+    name: 'meme-dev-appgw-subnet'
     addressPrefix: '10.0.2.16/28'
   }
   {
-    name: 'meme_dev_ilb_subnet'
+    name: 'meme-dev-ilb-subnet'
     addressPrefix: '10.0.2.32/28'
   }
   {
-    name: 'meme_dev_pe_subnet'
+    name: 'meme-dev-pe-subnet'
     addressPrefix: '10.0.2.64/26'
   }
   {
-    name: 'meme_dev_aks_subnet'
+    name: 'meme-dev-aks-subnet'
     addressPrefix: '10.0.3.0/24'
   }
 ]
