@@ -11,7 +11,7 @@ param vnetId string
 param aksSubnetId string
 
 @description('The ID of the existing Key Vault')
-param keyVaultId string
+param keyVaultId string = '/subscriptions/0cc20e92-7212-41e7-bf3f-2ebb8b14dcfb/resourceGroups/meme-dev-rg/providers/Microsoft.KeyVault/vaults/meme-dev-keyvlt-01'
 
 @description('The ID of the existing Azure Container Registry')
 param acrId string
@@ -19,8 +19,8 @@ param acrId string
 @description('The ID of the existing Log Analytics workspace')
 param logAnalyticsWorkspaceId string
 
-@description('The ID of the disk encryption set')
-param diskEncryptionSetId string = ''
+// @description('The ID of the disk encryption set')
+// param diskEncryptionSetId string = ''
 
 @description('The service CIDR for kubernetes services')
 param serviceCidr string = '172.16.0.0/16'
@@ -84,33 +84,33 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
     
     autoUpgradeProfile: {
       upgradeChannel: 'stable'
-      enableAutoUpgrade: true
+      nodeOSUpgradeChannel: 'NodeImage'
     }
 
     // Add maintenance window configuration
-    maintenanceWindow: {
-      allowed: [
-        {
-          day: 'Saturday'
-          hours: [
-            1
-            2
-            3
-            4
-          ]
-        }
-        {
-          day: 'Sunday'
-          hours: [
-            1
-            2
-            3
-            4
-          ]
-        }
-      ]
-      notAllowed: []
-    }
+    // maintenanceWindow: {
+    //   allowed: [
+    //     {
+    //       day: 'Saturday'
+    //       hours: [
+    //         1
+    //         2
+    //         3
+    //         4
+    //       ]
+    //     }
+    //     {
+    //       day: 'Sunday'
+    //       hours: [
+    //         1
+    //         2
+    //         3
+    //         4
+    //       ]
+    //     }
+    //   ]
+    //   notAllowed: []
+    // }
     
     securityProfile: {
       defender: {
@@ -119,6 +119,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
           enabled: true
         }
       }
+      
       workloadIdentity: {
         enabled: true
       }
@@ -128,6 +129,10 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
       }
     }
     
+    oidcIssuerProfile: {
+      enabled: true
+    }
+
     aadProfile: {
       managed: true
       enableAzureRBAC: true
@@ -137,7 +142,7 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
       {
         name: systemNodePoolName
         count: 3
-        vmSize: 'Standard_DS4_v3'
+        vmSize: 'standard_d4s_v3'
         mode: 'System'
         osType: 'Linux'
         osSKU: 'Ubuntu'
@@ -150,16 +155,11 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
           '2'
           '3'
         ]
-        diskEncryptionSetID: !empty(diskEncryptionSetId) ? diskEncryptionSetId : null
-        podDisruptionBudget: {
-          enabled: true
-          minAvailable: 1
-        }
       }
       {
         name: userNodePoolName
         count: 3
-        vmSize: 'Standard_DS8_v3'
+        vmSize: 'standard_d8s_v3'
         mode: 'User'
         osType: 'Linux'
         osSKU: 'Ubuntu'
@@ -174,28 +174,17 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
           '2'
           '3'
         ]
-        diskEncryptionSetID: !empty(diskEncryptionSetId) ? diskEncryptionSetId : null
-        podDisruptionBudget: {
-          enabled: true
-          minAvailable: 1
-        }
       }
     ]
     
     addonProfiles: {
-      kedaAddon: {
-        enabled: true
-      }
-      daprAddon: {
-        enabled: true
-      }
-      azureKeyvaultSecretsProviderAddon: {
+      azureKeyvaultSecretsProvider: {
         enabled: true
         config: {
           enableSecretRotation: 'true'
         }
       }
-      azurepolicyAddon: {
+      azurepolicy: {
         enabled: true
       }
       omsagent: {
@@ -203,9 +192,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2023-07-02-previ
         config: {
           logAnalyticsWorkspaceResourceID: logAnalyticsWorkspaceId
         }
-      }
-      azureDefender: {
-        enabled: true
       }
     }
   }
@@ -234,105 +220,3 @@ resource kvSecretsUserRole 'Microsoft.Authorization/roleAssignments@2022-04-01' 
 output clusterName string = aksCluster.name
 output clusterIdentityPrincipalId string = aksCluster.identity.principalId
 output privateDnsZoneId string = privateDnsZone.id
----------
-// main.bicep
-
-// Common parameters
-param location string = resourceGroup().location
-param environment string
-param prefix string
-
-// ACR parameters
-param acrSku string = 'Premium'
-
-// Key Vault parameters
-param kvSku string = 'standard'
-
-// AKS parameters
-param aksVersion string = '1.30.7'
-param aksSubnetId string
-param vnetId string
-
-// Create ACR
-resource acr 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
-  name: '${prefix}${environment}acr'
-  location: location
-  sku: {
-    name: acrSku
-  }
-  properties: {
-    adminUserEnabled: false
-    publicNetworkAccess: 'Disabled'
-  }
-}
-
-// Create Key Vault
-resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
-  name: '${prefix}${environment}kv'
-  location: location
-  properties: {
-    sku: {
-      family: 'A'
-      name: kvSku
-    }
-    tenantId: tenant().tenantId
-    enableRbacAuthorization: true
-    publicNetworkAccess: 'Disabled'
-  }
-}
-
-// Create Log Analytics Workspace
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: '${prefix}${environment}law'
-  location: location
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: 30
-    features: {
-      enableLogAccessUsingOnlyResourcePermissions: true
-    }
-  }
-}
-
-// Deploy AKS using module
-module aks './aks-private-cluster.bicep' = {
-  name: 'aks-deployment'
-  params: {
-    clusterName: '${prefix}${environment}aks'
-    location: location
-    vnetId: vnetId
-    aksSubnetId: aksSubnetId
-    keyVaultId: kv.id        // Reference KV resource id
-    acrId: acr.id           // Reference ACR resource id
-    logAnalyticsWorkspaceId: logAnalytics.id  // Reference Log Analytics resource id
-  }
-  dependsOn: [
-    acr
-    kv
-    logAnalytics
-  ]
-}
-
-// Outputs
-output acrLoginServer string = acr.properties.loginServer
-output aksClusterName string = aks.outputs.clusterName
-output aksIdentityPrincipalId string = aks.outputs.clusterIdentityPrincipalId
----
-// main.bicepparam
-
-using './main.bicep'
-
-param prefix = 'proj'
-param environment = 'prod'
-param location = 'eastus'
-
-// Network parameters
-param vnetId string = '/subscriptions/sub-id/resourceGroups/rg-name/providers/Microsoft.Network/virtualNetworks/vnet-name'
-param aksSubnetId string = '/subscriptions/sub-id/resourceGroups/rg-name/providers/Microsoft.Network/virtualNetworks/vnet-name/subnets/aks-subnet'
-
-// Optional parameters with defaults defined in main.bicep
-param acrSku = 'Premium'
-param kvSku = 'standard'
-param aksVersion = '1.30.7'

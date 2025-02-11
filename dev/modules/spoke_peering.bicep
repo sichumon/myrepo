@@ -1,4 +1,3 @@
-targetScope = 'resourceGroup'
 param hubVnetName string
 param hubvnetID string
 param spokeVnetName string
