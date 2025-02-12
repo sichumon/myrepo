@@ -5,12 +5,12 @@ targetScope = 'resourceGroup'
 param tags object
 @description('Location for all resources.')
 param location string
-// @description('Hub network configuration')
+@description('Hub network configuration')
 param hubResourceGroupName string
 param hubVnetName string
 // param hubVnetID string
 param resourceGroupName string
-// @description('VNET configuration')
+@description('VNET configuration')
 param vnetAddressPrefix string
 param subnets array
 param vnetName string
@@ -45,6 +45,9 @@ module vnetPeering 'modules/peering.bicep' = {
     spokeResourceGroupName: resourceGroupName
     spokeVnetName: vnetName
   }
+  dependsOn: [
+    vnetConfig
+ ]
 }
 
 module devopsAgent 'modules/devops-agent.bicep' = {

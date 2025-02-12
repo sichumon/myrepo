@@ -29,6 +29,7 @@ module hubPeering 'hub_peering.bicep' = {
   params: {
     hubVnetName: hubVnetName
     spokeVnetId: spokeVnet.id
+    spokeVnetName: spokeVnetName
   }
 }
 
@@ -38,5 +39,6 @@ module spokePeering 'spoke_peering.bicep' = {
   params: {
     spokeVnetName: spokeVnetName
     hubVnetId: hubVnet.id
+    hubVnetName: hubVnetName
   }
 }
