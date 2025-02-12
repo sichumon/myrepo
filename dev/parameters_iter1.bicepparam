@@ -6,9 +6,9 @@ param tags = {
   environment: 'iter1'
   project: 'meme'
 }
-// param hubResourceGroupName = 'meme-poc-hub-rg'
-// param resourceGroupName = 'meme-iter1'
-// param hubVnetName = 'HubVNet'
+param hubResourceGroupName = 'meme-poc-hub-rg'
+param hubVnetName = 'HubVNet'
+param resourceGroupName = 'meme-iter1'
 // param hubVnetID = '/subscriptions/0cc20e92-7212-41e7-bf3f-2ebb8b14dcfb/resourceGroups/meme-poc-hub-rg/providers/Microsoft.Network/virtualNetworks/HubVNet'
 // param devopssubnet = 'meme-iter1-mgmt-subnet'
 

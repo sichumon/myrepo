@@ -23,7 +23,7 @@ resource spokeVnet 'Microsoft.Network/virtualNetworks@2021-08-01' existing = {
   name: spokeVnetName
 }
 
-module hubPeering 'hubPeering.bicep' = {
+module hubPeering 'hub_peering.bicep' = {
   scope: hubRg
   name: 'hubPeering'
   params: {
@@ -32,7 +32,7 @@ module hubPeering 'hubPeering.bicep' = {
   }
 }
 
-module spokePeering 'spokePeering.bicep' = {
+module spokePeering 'spoke_peering.bicep' = {
   scope: spokeRg
   name: 'spokePeering'
   params: {

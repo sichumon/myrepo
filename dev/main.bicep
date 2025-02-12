@@ -8,7 +8,7 @@ param location string
 // @description('Hub network configuration')
 param hubResourceGroupName string
 param hubVnetName string
-param hubVnetID string
+// param hubVnetID string
 param resourceGroupName string
 // @description('VNET configuration')
 param vnetAddressPrefix string
@@ -42,8 +42,8 @@ module vnetPeering 'modules/peering.bicep' = {
   params: {
     hubResourceGroupName: hubResourceGroupName
     hubVnetName: hubVnetName
-    spokeResourceGroupName: spokeResourceGroupName
-    spokeVnetName: spokeVnetName
+    spokeResourceGroupName: resourceGroupName
+    spokeVnetName: vnetName
   }
 }
 
