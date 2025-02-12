@@ -1,0 +1,32 @@
+# Add Bitnami repo
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+# Download PostgreSQL chart and dependencies
+helm pull bitnami/postgresql --untar
+helm dependency build postgresql/
+
+# Download Redis chart and dependencies
+helm pull bitnami/redis --untar
+helm dependency build redis/
+
+# Create a tar file of both charts
+tar -czf db-charts.tar.gz postgresql/ redis/
+
+# Using scp or any other file transfer method
+scp db-charts.tar.gz username@vm-ip:/path/to/destination/
+
+# Extract the charts
+tar -xzf db-charts.tar.gz
+
+# Install PostgreSQL
+helm install my-postgres ./postgresql \
+  --namespace databases \
+  --values postgres-values.yaml
+
+# Install Redis
+helm install my-redis ./redis \
+  --namespace databases \
+  --values redis-values.yaml
+
+  
