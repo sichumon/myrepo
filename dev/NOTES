@@ -29,4 +29,101 @@ helm install my-redis ./redis \
   --namespace databases \
   --values redis-values.yaml
 
-  
+
+#!/bin/bash
+
+# Variables - replace these with your values
+CERT_NAME="my-cert"
+KEY_VAULT_NAME="your-key-vault"
+SUBJECT="/CN=example.com"
+VALIDITY_DAYS=365
+
+# Generate private key and certificate
+openssl req -x509 \
+    -newkey rsa:4096 \
+    -sha256 \
+    -days $VALIDITY_DAYS \
+    -nodes \
+    -keyout "$CERT_NAME.key" \
+    -out "$CERT_NAME.crt" \
+    -subj "$SUBJECT" \
+    -extensions ext \
+    -config <(
+        printf "[dn]\nCN=example.com\n[req]\ndistinguished_name = dn\n[ext]\nsubjectAltName=DNS:example.com\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth"
+    )
+
+# Convert to PFX format (required for Key Vault)
+openssl pkcs12 -export \
+    -out "$CERT_NAME.pfx" \
+    -inkey "$CERT_NAME.key" \
+    -in "$CERT_NAME.crt" \
+    -passout pass:"temppass"
+
+# Convert PFX to base64
+CERT_BASE64=$(base64 -i "$CERT_NAME.pfx" -w 0)
+
+# Upload to Key Vault
+az keyvault certificate import \
+    --vault-name "$KEY_VAULT_NAME" \
+    --name "$CERT_NAME" \
+    --file "$CERT_NAME.pfx" \
+    --password "temppass"
+
+# Clean up local files
+rm "$CERT_NAME.key" "$CERT_NAME.crt" "$CERT_NAME.pfx"
+
+echo "Certificate successfully created and imported to Key Vault"
+
+---
+
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-kvname-cert
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: ""
+    keyvaultName: "your-key-vault"
+    objects: |
+      array:
+        - |
+          objectName: my-cert
+          objectType: cert
+          objectVersion: ""
+          objectFormat: pfx      # Specify the format of the certificate
+    tenantId: "your-tenant-id"
+
+
+---
+# 2. Create a deployment that mounts the certificate
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-with-cert
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-with-cert
+  template:
+    metadata:
+      labels:
+        app: app-with-cert
+    spec:
+      containers:
+      - name: app
+        image: nginx:latest         # Replace with your application image
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "azure-kvname-cert"
